@@ -16,8 +16,8 @@ async function layout({ params, children }: PageProps) {
   ).then((res) => res.json())
 
   return (
-    <div className="grid grid-cols-1 grid-flow-row rounded-3xl border border-zinc-200 sm:grid-cols-2 ">
-      <div className=" overflow-hidden rounded-3xl mx-[-16px]  max-h-screen h-[820px]">
+    <div className="grid grid-cols-1 grid-flow-row rounded-3xl border border-zinc-200 sm:grid-cols-2 mt-4 ">
+      <div className=" overflow-hidden rounded-3xl max-h-screen h-[820px]">
         <PostCard post={post} />
       </div>
       <div className="flex-grow pt-8 p-4 sm:p-8 s:pt-0">{children}</div>

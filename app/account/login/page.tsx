@@ -1,5 +1,6 @@
 import LoginForm from 'components/auth/LoginForm'
 import Image from 'next/image'
+import Link from 'next/link'
 function Login() {
   return (
     <div className="flex flex-col items-center">
@@ -13,6 +14,17 @@ function Login() {
         </h1>
       </div>
       <LoginForm />
+      <div className=" my-8">
+        New user ?
+        <span>
+          <Link
+            className=" font-semibold text-sky-500 mx-2"
+            href={'/account/create-account'}
+          >
+            Sign up
+          </Link>
+        </span>
+      </div>
     </div>
   )
 }

@@ -14,7 +14,7 @@ function ProfileHeader({ user, totalPosts, id }: Props) {
 
   return (
     <div className="snap-start pt-24">
-      <div className="mx-auto max-w-[420px] p-6 py-12 border border-slate-200 rounded-3xl flex flex-col gap-6">
+      <div className="mx-auto max-w-[420px] p-6 py-12 border border-slate-200 rounded-3xl flex flex-col gap-6 mb-8 sm:mb-0 ">
         <div className="flex flex-col gap-2 items-center">
           <Avatar size={96} user={user} />
           <h1 className=" text-xl font-semibold text-center">{user.name}</h1>

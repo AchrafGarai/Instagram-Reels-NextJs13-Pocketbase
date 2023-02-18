@@ -1,6 +1,7 @@
 import React from 'react'
 import SignUpForm from 'components/auth/SignUpForm'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function page() {
   return (
@@ -15,6 +16,17 @@ function page() {
         </h1>
       </div>
       <SignUpForm />
+      <div className=" my-8">
+        Already have an account ?
+        <span>
+          <Link
+            className=" font-semibold text-sky-500 mx-2"
+            href={'/account/login'}
+          >
+            Login
+          </Link>
+        </span>
+      </div>
     </div>
   )
 }

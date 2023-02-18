@@ -38,14 +38,14 @@ function PostFooter({ post, id }: IPostFooter) {
   ) as { data: LikeList }
   if (!likes.data || !comments.data || !isLiked.data)
     return (
-      <div className="absolute left-6 bottom-6 z-10">
+      <div className="absolute left-6 bottom-14 z-10 s:bottom-6">
         <PostFooterSkeleton />
       </div>
     )
 
   const liked = isLiked.data.totalItems > 0 ? true : false
   return (
-    <div className="absolute bottom-0 w-full p-6 text-white bg-gradient-to-t from-custom-shadow">
+    <div className="absolute bottom-0 w-full p-6 pb-12 text-white bg-gradient-to-t from-custom-shadow sm:pb-6 ">
       <Link href={`/posts/${post.id}`}>
         <p className="py-4">{post.caption}</p>
       </Link>

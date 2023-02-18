@@ -27,14 +27,6 @@ function Player({ videoUrl }: { videoUrl: string }) {
     }
   }
 
-  //   const togglePlay = () => {
-  //     if (playing) {
-  //       setPlaying(false)
-  //     } else {
-  //       setPlaying(true)
-  //     }
-  //   }
-
   return (
     <>
       <InView
@@ -57,7 +49,7 @@ function Player({ videoUrl }: { videoUrl: string }) {
 
           <button
             onClick={() => togglePlay(!playing)}
-            className="absolute z-20 right-7 bottom-8 text-white"
+            className="absolute z-20 right-7 bottom-16 text-white sm:bottom-8"
           >
             {playing ? (
               <PauseIcon width={24} height={24} />
