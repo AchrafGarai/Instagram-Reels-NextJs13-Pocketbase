@@ -36,6 +36,7 @@ export default async function handler(
   res: NextApiResponse<Data>,
 ) {
   await runMiddleware(req, res, cors)
+
   if (req.method === 'POST') {
     try {
       const { email, password } = req.body
