@@ -7,6 +7,7 @@ import Loading from 'components/UI/Loading'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { pb } from 'utils/pocketbase'
 import { ScrollEnd } from 'components/UI'
+import { api_Url } from 'utils/consts'
 
 const pageSize = 4
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -14,7 +15,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json())
 function InfiniteComments({ postId }: { postId: string }) {
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `http://127.0.0.1:8090/api/collections/comments/records?filter=post="${postId}"&page=${
+      `${api_Url}collections/comments/records?filter=post="${postId}"&page=${
         index + 1
       }&perPage=${pageSize}&sort=-created&expand=profile`,
     fetcher,
@@ -29,7 +30,7 @@ function InfiniteComments({ postId }: { postId: string }) {
   if (data[0].totalItems === 0)
     return (
       <>
-        <p>'No comments...'</p>
+        <p>No comments...</p>
         <CreateComment postId={postId} onMutate={mutate} />
       </>
     )

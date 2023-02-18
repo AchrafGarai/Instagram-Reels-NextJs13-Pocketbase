@@ -1,14 +1,11 @@
 'use client'
 import PostFooter from './PostFooter'
-import Link from 'next/link'
 import { pb } from 'utils/pocketbase'
 import { useRouter } from 'next/navigation'
 import { Post } from 'types'
 import { api_Url } from 'utils/consts'
 import Player from 'components/Player/Player'
 import PostHeader from './PostHeader'
-
-import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 

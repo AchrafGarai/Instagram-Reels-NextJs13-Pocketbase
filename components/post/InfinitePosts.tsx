@@ -9,6 +9,7 @@ import { ScrollEnd } from 'components/UI'
 import { InView } from 'react-intersection-observer'
 import { useState } from 'react'
 import { PostSkeleton } from 'components/UI'
+import { PostList } from 'types'
 
 const pageSize = 2
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -76,15 +77,13 @@ function InfinitePosts({ userId, searchQuery }: Props) {
       {data && (
         <>
           <>
-            {posts.map((page: any, index: number) => {
+            {posts.map((page: PostList) => {
               return (
-                <div>
-                  <InfinitePostsPage
-                    key={index}
-                    data={page.items}
-                    onMutate={handleDelte}
-                  />
-                </div>
+                <InfinitePostsPage
+                  key={page.items[0].id}
+                  data={page.items}
+                  onMutate={handleDelte}
+                />
               )
             })}
           </>

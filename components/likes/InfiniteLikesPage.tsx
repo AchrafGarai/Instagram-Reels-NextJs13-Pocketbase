@@ -1,11 +1,12 @@
 import React from 'react'
+import { Like } from 'types'
 import LikeCard from './LikeCard'
 
-function InfiniteLikesPage({ data }: any) {
+function InfiniteLikesPage({ data }: { data: Like[] }) {
   return (
     <div>
-      {data.map((like: any) => {
-        return <LikeCard data={like} />
+      {data.map((like: Like) => {
+        return <LikeCard data={like} key={like.id} />
       })}
     </div>
   )

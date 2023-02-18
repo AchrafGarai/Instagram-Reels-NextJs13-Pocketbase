@@ -9,8 +9,14 @@ type Props = {
     q: string
   }
 }
-async function SearchPage({ searchParams }: Props) {
-  const { q } = searchParams
+async function SearchPage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string }
+  searchParams?: { [key: string]: string | undefined }
+}) {
+  let q = searchParams?.q || ''
 
   return (
     <div className="container">
