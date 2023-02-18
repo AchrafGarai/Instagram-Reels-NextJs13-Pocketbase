@@ -1,5 +1,5 @@
 export const login = async (email: string, password: string) => {
-  const url = 'http://localhost:3000/api/login'
+  const url = '/api/login'
   const data = {
     email,
     password,
@@ -22,7 +22,7 @@ export const login = async (email: string, password: string) => {
 }
 
 export const logout = async () => {
-  const url = 'http://localhost:3000/api/logout'
+  const url = '/api/logout'
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin

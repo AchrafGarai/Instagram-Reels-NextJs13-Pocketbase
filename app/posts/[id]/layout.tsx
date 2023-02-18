@@ -1,5 +1,6 @@
 import React from 'react'
 import PostCard from 'components/post/PostCard'
+import { api_Url } from 'utils/consts'
 type PageProps = {
   params: {
     id: string
@@ -11,7 +12,7 @@ async function layout({ params, children }: PageProps) {
   const { id } = params
 
   const post = await fetch(
-    `http://127.0.0.1:8090/api/collections/posts/records/${id}?expand=profile`,
+    `${api_Url}collections/posts/records/${id}?expand=profile`,
   ).then((res) => res.json())
 
   return (
