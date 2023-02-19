@@ -64,7 +64,7 @@ function InfinitePosts({ userId, searchQuery }: Props) {
   }
 
   const handleLoadMore = () => {
-    if (totalPages < data[0].totalPages) {
+    if (totalPages < data[0].totalItems) {
       setSize(size + 1)
       setHasNextPage(true)
     } else {

@@ -15,7 +15,7 @@ function Avatar({ user, size }: Props) {
   return (
     <>
       {user.avatar ? (
-        <Link href={`profile/${user.username}`}>
+        <Link href={`profile/${user?.username}`}>
           <div
             className="relative"
             style={{ width: `${s}px`, height: `${s}px` }}
@@ -30,7 +30,7 @@ function Avatar({ user, size }: Props) {
         </Link>
       ) : (
         <div className="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-200 text-lg font-semibold">
-          <p>{user.name.toUpperCase().charAt(0)}</p>
+          <p>{user?.name?.toUpperCase().charAt(0)}</p>
         </div>
       )}
     </>
