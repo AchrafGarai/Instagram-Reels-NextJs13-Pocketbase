@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { pb } from 'utils/pocketbase'
 import { useSWRConfig } from 'swr'
 import { Alert } from 'components/UI'
+import { api_Url } from 'utils/consts'
 
 function CreateComment({
   postId,
@@ -37,7 +38,7 @@ function CreateComment({
       setLoading(false)
       // Refrech Page to display new comment
       await mutate(
-        `http://127.0.0.1:8090/api/collections/comments/records?filter=(post='${postId}')`,
+        `${api_Url}collections/comments/records?filter=(post='${postId}')`,
         true,
       )
       await onMutate()

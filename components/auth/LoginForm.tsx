@@ -23,6 +23,7 @@ function LoginForm() {
       await login(email, password)
       setStatus('Logged in successfully ✅')
       router.refresh()
+      router.replace('/')
     } catch (e) {
       console.log(e)
       setStatus('Unable to Login 🚫')
