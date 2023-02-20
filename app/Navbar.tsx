@@ -24,7 +24,6 @@ async function Navbar() {
         <div className="flex flex-row items-center justify-end gap-4 flex-grow">
           {user ? (
             <>
-              <ButtonLink href='logout'>Logout</ButtonLink>
               <CreatePostButton />
               <Avatar user={userData} />
               <NavbarDropDown />
