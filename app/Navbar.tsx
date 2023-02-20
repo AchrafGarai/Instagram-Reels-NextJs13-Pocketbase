@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Avatar, ButtonLink, CreatePostButton, SearchBar } from 'components/UI'
 import { MobileNav, NavbarDropDown } from 'components/layout'
 import { getUSerData } from 'utils/useUser'
+import { LogoutButton } from 'components/auth'
 
 async function Navbar() {
   const user = useUser()
@@ -23,6 +24,7 @@ async function Navbar() {
         <div className="flex flex-row items-center justify-end gap-4 flex-grow">
           {user ? (
             <>
+              <ButtonLink href='logout'>Logout</ButtonLink>
               <CreatePostButton />
               <Avatar user={userData} />
               <NavbarDropDown />

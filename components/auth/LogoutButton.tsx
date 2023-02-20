@@ -7,12 +7,12 @@ import { useSWRConfig } from 'swr'
 function LogoutButton() {
   const router = useRouter()
   const { mutate } = useSWRConfig()
-  const handleLogout = () => {
+  const handleLogout = async () => {
     pb.authStore.clear()
     logout()
     //Clear all SWR data
     mutate(/* match all keys */ () => true, undefined, false)
-    router.replace('/account/login')
+    await router.push('/account/login')
     router.refresh()
   }
   return (

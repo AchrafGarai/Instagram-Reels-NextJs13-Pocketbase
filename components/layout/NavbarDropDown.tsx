@@ -12,46 +12,54 @@ import {
   DropDownRoot,
   DropDownItem,
   DropDownTrigger,
+  DropDownLink
 } from 'components/UI/DropDown'
 import { LogoutButton } from 'components/auth'
+import { useRouter } from 'next/navigation'
+import { pb } from 'utils/pocketbase'
 
+
+import { useSWRConfig } from 'swr'
+import { logout } from 'utils/auth'
 function NavbarDropDown() {
+  const router = useRouter()
+  const { mutate } = useSWRConfig()
+  const handleLogout = () => {
+    pb.authStore.clear()
+    logout()
+    //Clear all SWR data
+    mutate(/* match all keys */ () => true, undefined, false)
+    router.replace('/account/login')
+  }
   return (
     <DropDownRoot>
       <DropDownTrigger>
         <ChevronDownIcon width={24} height={24} />
       </DropDownTrigger>
       <DropDownContent>
-        <DropDownItem className="block sm:hidden">
-          <Link href={'/'} className="flex items-center w-full gap-2">
+        <div className="block sm:hidden">
+        <DropDownLink href={'/'}>
             <HomeIcon width={20} height={20} /> Home
-          </Link>
-        </DropDownItem>
-        <DropDownItem className="block sm:hidden">
-          <Link href={'/create'} className="flex items-center w-full gap-2">
-            <PlusIcon width={20} height={20} /> Create Post
-          </Link>
-        </DropDownItem>
+        </DropDownLink>
+        </div>
 
-        <DropDownItem>
-          <Link
-            href={'/notifications'}
-            className="flex items-center w-full gap-2"
-          >
+        <div className="block sm:hidden">
+          <DropDownLink href={'/create'}>
+            <PlusIcon width={20} height={20} /> Create Post
+          </DropDownLink>
+        </div>
+
+        <DropDownLink href={'/notifications'}>
             <HeartIcon width={20} height={20} /> Notifications
-          </Link>
-        </DropDownItem>
-        <DropDownItem>
-          <Link
-            href={'/settings/edit'}
-            className="flex items-center w-full gap-2"
-          >
+        </DropDownLink>
+        
+        <DropDownLink href='/settings/edit'>
             <PersonIcon width={20} height={20} /> My Profile
-          </Link>
-        </DropDownItem>
-        <DropDownItem>
-          <LogoutButton />
-        </DropDownItem>
+        </DropDownLink>
+
+        <DropDownLink href='/logout'>
+          Logout
+        </DropDownLink>
       </DropDownContent>
     </DropDownRoot>
   )

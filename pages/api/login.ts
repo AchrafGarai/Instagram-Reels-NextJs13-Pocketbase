@@ -49,6 +49,7 @@ export default async function handler(
         res.status(400).json({ message: `Unable to login` })
       }
     } catch (e) {
+      console.log(e)
       res.status(500).json({ message: `Unable to login` })
     }
   } else {
