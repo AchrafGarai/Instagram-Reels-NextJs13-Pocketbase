@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { Orb } from '@/components/brand/orb'
+import { DemoBanner } from '@/components/layout/demo-banner'
 import { getCurrentUser } from '@/lib/pocketbase/server'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -13,6 +14,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="w-full max-w-md">
           <Suspense>
             <RedirectIfSignedIn />
+            <DemoBanner className="mb-8" />
           </Suspense>
           {children}
         </div>

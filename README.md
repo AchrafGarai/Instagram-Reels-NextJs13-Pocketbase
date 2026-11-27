@@ -39,6 +39,14 @@ Browser ──► Next.js (RSC + Server Actions) ──► PocketBase (SQLite, a
 
 Like and comment counts come from a SQL **view collection** (`post_stats`). A page of the feed costs three queries in total, not three per post.
 
+## Demo mode
+
+If PocketBase can't be reached (a preview deployment with no backend, or you just haven't started it), the app doesn't break. It falls back to a **read-only demo** with static sample profiles and six generated gradient reels from `public/demo/`. The navbar shows a "Demo · read-only" badge, and the login page explains that likes, comments and accounts are disabled.
+
+- The check is one request to PocketBase's `/api/health` with a 1.5-second timeout, cached for 30 seconds. An offline backend costs one short wait, not one per request, and the app switches back on its own when PocketBase returns.
+- The fallback sits in the data layer (`lib/data.ts` → `lib/demo.ts`) and returns the same view models, so no page or component has a separate demo path.
+- Set `DEMO_MODE=true` to force it.
+
 ## Getting started
 
 Requirements: Node.js 20+, and `ffmpeg` if you want demo videos.
