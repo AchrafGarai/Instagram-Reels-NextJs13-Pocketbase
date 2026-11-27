@@ -1,32 +1,42 @@
-import InfiniteLikes from 'components/likes/InfiniteLikes'
-import { LikeList } from 'types'
-import { api_Url } from 'utils/consts'
-import { BackButton } from 'components/UI'
+import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { ArrowLeftIcon } from '@radix-ui/react-icons'
+import Link from 'next/link'
+import { LikesList } from '@/components/profile/likes-list'
+import { Spinner } from '@/components/ui/spinner'
+import { getLikesPage } from '@/lib/data'
+import { recordId } from '@/lib/validation'
+import { notFound } from 'next/navigation'
 
-type PageProps = {
-  params: {
-    id: string
-  }
-  children?: React.ReactNode
-}
+export const metadata: Metadata = { title: 'Likes' }
 
-async function LikesPage({ params }: PageProps) {
-  const postId = params.id
-  const likes = (await fetch(
-    `${api_Url}collections/likes/records?perpage=1&page=1&filter=(post="${postId}")`,
-  ).then((res) => res.json())) as LikeList
-
+export default function LikesPage({ params }: PageProps<'/posts/[id]/likes'>) {
   return (
-    <>
-      <div className="flex gap-4 items-center mb-9">
-        <BackButton />
-        <h1 className="flex-grow text-lg font-semibold">Likes</h1>
-        <p className="text-lg font-semibold">{likes.totalItems}</p>
-      </div>
-      <div className="bg-zinc-200 h-[1px] w-full mb-9"></div>
-      <InfiniteLikes postId={postId} />
-    </>
+    <Suspense fallback={<Spinner />}>
+      <Likes params={params} />
+    </Suspense>
   )
 }
 
-export default LikesPage
+async function Likes({ params }: Pick<PageProps<'/posts/[id]/likes'>, 'params'>) {
+  const { id } = await params
+  if (!recordId.safeParse(id).success) notFound()
+  const likes = await getLikesPage(id)
+
+  return (
+    <div className="flex flex-col gap-6">
+      <header className="flex items-center gap-3 border-b border-zinc-200 pb-4">
+        <Link
+          href={`/posts/${id}`}
+          className="rounded-full p-2 hover:bg-zinc-100"
+          aria-label="Back to the reel"
+        >
+          <ArrowLeftIcon width={20} height={20} />
+        </Link>
+        <h1 className="flex-1 text-lg font-semibold">Likes</h1>
+        <span className="font-semibold tabular-nums">{likes.totalItems}</span>
+      </header>
+      <LikesList key={likes.totalItems} postId={id} initial={likes} />
+    </div>
+  )
+}

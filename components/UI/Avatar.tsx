@@ -1,40 +1,35 @@
-import { User } from 'types'
 import Image from 'next/image'
-import Link from 'next/link'
-import { api_Url } from 'utils/consts'
+import type { Profile } from '@/lib/pocketbase/types'
 
-type Props = {
-  user: User
+export function Avatar({
+  user,
+  size = 40,
+}: {
+  user: Pick<Profile, 'name' | 'avatarUrl'>
   size?: number
-}
-function Avatar({ user, size }: Props) {
-  const avatarImage = `${api_Url}files/_pb_users_auth_/${user.id}/${user.avatar}`
-
-  const s = size || 48
+}) {
+  if (user.avatarUrl) {
+    return (
+      <Image
+        src={user.avatarUrl}
+        alt=""
+        width={size}
+        height={size}
+        // PocketBase already serves a resized thumbnail.
+        unoptimized
+        className="shrink-0 rounded-full bg-zinc-100 object-cover"
+        style={{ width: size, height: size }}
+      />
+    )
+  }
 
   return (
-    <>
-      {user.avatar ? (
-        <Link href={`profile/${user?.username}`}>
-          <div
-            className="relative"
-            style={{ width: `${s}px`, height: `${s}px` }}
-          >
-            <Image
-              className="rounded-full object-cover"
-              src={avatarImage}
-              fill
-              alt={'logo'}
-            />
-          </div>
-        </Link>
-      ) : (
-        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-200 text-lg font-semibold">
-          <p>{user?.name?.toUpperCase().charAt(0)}</p>
-        </div>
-      )}
-    </>
+    <span
+      aria-hidden="true"
+      className="flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-200 to-accent font-semibold text-white"
+      style={{ width: size, height: size, fontSize: size * 0.4 }}
+    >
+      {user.name.charAt(0).toUpperCase()}
+    </span>
   )
 }
-
-export default Avatar

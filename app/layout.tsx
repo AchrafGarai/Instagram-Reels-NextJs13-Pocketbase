@@ -1,24 +1,28 @@
+import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
+import { Suspense } from 'react'
+import { Navbar, NavbarSkeleton } from '@/components/layout/navbar'
 import './globals.css'
-import Navbar from './Navbar'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const inter = Inter({ subsets: ['latin'], display: 'swap' })
+
+export const metadata: Metadata = {
+  title: { default: 'Reels', template: '%s · Reels' },
+  description: 'Short vertical videos: post, scroll, like and comment.',
+}
+
+export const viewport: Viewport = {
+  themeColor: '#ffffff',
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="snap-y snap-mandatory">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
-      <head />
+    <html lang="en" className={inter.className}>
       <body>
-        {/* @ts-ignore */}
-        <Navbar />
-        <div className="px-4 py-12 pt-0 max-w-[820px] mx-auto sm:pt-32">
-          {children}
-        </div>
+        <Suspense fallback={<NavbarSkeleton />}>
+          <Navbar />
+        </Suspense>
+        <main className="mx-auto max-w-5xl px-4 pb-16 sm:pt-16">{children}</main>
       </body>
     </html>
   )

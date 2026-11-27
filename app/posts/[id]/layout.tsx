@@ -1,28 +1,24 @@
-import React from 'react'
-import PostCard from 'components/post/PostCard'
-import { api_Url } from 'utils/consts'
-type PageProps = {
-  params: {
-    id: string
-  }
-  children?: React.ReactNode
-}
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
+import { PostCard } from '@/components/feed/post-card'
+import { getPost } from '@/lib/data'
 
-async function layout({ params, children }: PageProps) {
-  const { id } = params
-
-  const post = await fetch(
-    `${api_Url}collections/posts/records/${id}?expand=profile`,
-  ).then((res) => res.json())
-
+export default function PostLayout({ params, children }: LayoutProps<'/posts/[id]'>) {
   return (
-    <div className="grid grid-cols-1 grid-flow-row rounded-3xl border border-zinc-200 sm:grid-cols-2 mt-4 ">
-      <div className=" overflow-hidden rounded-3xl max-h-screen h-[820px]">
-        <PostCard post={post} />
+    <div className="grid gap-6 pt-20 sm:grid-cols-2 sm:pt-8">
+      <div className="-mx-4 h-[80svh] sm:mx-0 sm:h-[760px] sm:max-h-[calc(100svh-6rem)]">
+        <Suspense fallback={<div className="h-full animate-pulse bg-zinc-200 sm:rounded-3xl" />}>
+          <PostVideo params={params} />
+        </Suspense>
       </div>
-      <div className="flex-grow pt-8 p-4 sm:p-8 s:pt-0">{children}</div>
+      <div className="min-w-0">{children}</div>
     </div>
   )
 }
 
-export default layout
+async function PostVideo({ params }: Pick<LayoutProps<'/posts/[id]'>, 'params'>) {
+  const { id } = await params
+  const post = await getPost(id)
+  if (!post) notFound()
+  return <PostCard post={post} />
+}
