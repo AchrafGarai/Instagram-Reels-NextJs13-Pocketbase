@@ -34,3 +34,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local env
+.env
+
+# local PocketBase binary and data (see README)
+/.pocketbase/
+
+# local editor/agent config
+/.claude/

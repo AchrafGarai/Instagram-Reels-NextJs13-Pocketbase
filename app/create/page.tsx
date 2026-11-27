@@ -1,14 +1,25 @@
-import React from 'react'
-import CreatePost from 'components/post/create/CreatePost'
-import { useUserProtected } from 'utils/useUser'
+import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { CreatePostForm } from '@/components/posts/create-post-form'
+import { PageHeader } from '@/components/ui/page-header'
+import { requireUser } from '@/lib/pocketbase/server'
 
-function page() {
-  useUserProtected()
+export const metadata: Metadata = { title: 'New reel' }
+
+export default function CreatePage() {
   return (
-    <div className="border border-gray-200 rounded-3xl overflow-hidden">
-      <CreatePost />
+    <div className="mx-auto max-w-3xl pt-20 sm:pt-8">
+      <PageHeader title="New reel" />
+      <Suspense>
+        <AuthGate>
+          <CreatePostForm />
+        </AuthGate>
+      </Suspense>
     </div>
   )
 }
 
-export default page
+async function AuthGate({ children }: { children: React.ReactNode }) {
+  await requireUser()
+  return children
+}
