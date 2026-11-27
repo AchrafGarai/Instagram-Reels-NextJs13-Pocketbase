@@ -2,7 +2,8 @@ import 'server-only'
 
 import { ClientResponseError } from 'pocketbase'
 import type PocketBase from 'pocketbase'
-import { getServerClient } from './pocketbase/server'
+import { demo } from './demo'
+import { getServerClient, isDemoMode } from './pocketbase/server'
 import { toCommentItem, toFeedPost, toLikeItem, toProfile } from './pocketbase/mappers'
 import type {
   ActivityItem,
@@ -26,7 +27,8 @@ export const LIST_PAGE_SIZE = 12
  * Data access layer. Every query goes through the per-request client, so
  * PocketBase's access rules apply as the current visitor, and every
  * user-supplied value is bound with `pb.filter` instead of being concatenated
- * into the filter string.
+ * into the filter string. When PocketBase is unreachable, reads fall back to
+ * the static sample data in `./demo`.
  */
 
 /** `field = a || field = b || ...` with each id bound as a parameter. */
@@ -78,6 +80,7 @@ async function withStats(pb: PocketBase, posts: PostRecord[]): Promise<FeedPost[
 }
 
 export async function getFeedPage(scope: FeedScope, page = 1): Promise<Page<FeedPost>> {
+  if (await isDemoMode()) return demo.feedPage(scope, page, FEED_PAGE_SIZE)
   const pb = await getServerClient()
   const result = await pb.collection('posts').getList<PostRecord>(page, FEED_PAGE_SIZE, {
     sort: '-created,-id',
@@ -98,6 +101,7 @@ function isNotFound(error: unknown) {
 }
 
 export async function getPost(id: string): Promise<FeedPost | null> {
+  if (await isDemoMode()) return demo.post(id)
   const pb = await getServerClient()
   try {
     const post = await pb.collection('posts').getOne<PostRecord>(id, { expand: 'author' })
@@ -112,6 +116,7 @@ export async function getPost(id: string): Promise<FeedPost | null> {
 export async function getProfile(
   username: string,
 ): Promise<{ profile: Profile; postCount: number } | null> {
+  if (await isDemoMode()) return demo.profile(username)
   const pb = await getServerClient()
   try {
     const user = await pb
@@ -129,6 +134,7 @@ export async function getProfile(
 }
 
 export async function getCommentsPage(postId: string, page = 1): Promise<Page<CommentItem>> {
+  if (await isDemoMode()) return demo.commentsPage(postId, page, LIST_PAGE_SIZE)
   const pb = await getServerClient()
   const result = await pb.collection('comments').getList<CommentRecord>(page, LIST_PAGE_SIZE, {
     sort: '-created,-id',
@@ -144,6 +150,7 @@ export async function getCommentsPage(postId: string, page = 1): Promise<Page<Co
 }
 
 export async function getLikesPage(postId: string, page = 1): Promise<Page<LikeItem>> {
+  if (await isDemoMode()) return demo.likesPage(postId, page, LIST_PAGE_SIZE)
   const pb = await getServerClient()
   const result = await pb.collection('likes').getList<LikeRecord>(page, LIST_PAGE_SIZE, {
     sort: '-created,-id',

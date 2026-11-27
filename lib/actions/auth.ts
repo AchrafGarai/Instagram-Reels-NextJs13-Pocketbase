@@ -2,8 +2,16 @@
 
 import { ClientResponseError } from 'pocketbase'
 import { redirect } from 'next/navigation'
-import { clearAuthCookie, createClient, setAuthCookie } from '@/lib/pocketbase/server'
+import {
+  clearAuthCookie,
+  createClient,
+  isDemoMode,
+  setAuthCookie,
+} from '@/lib/pocketbase/server'
 import { fieldErrors, loginSchema, signupSchema, type FormState } from '@/lib/validation'
+
+const DEMO_ERROR =
+  'The backend is offline, so this is a read-only demo. Accounts, likes and comments are disabled.'
 
 /** Only allow redirects back into this app, never to another origin. */
 function safeRedirect(target: FormDataEntryValue | null) {
@@ -16,6 +24,7 @@ export async function login(_prev: FormState, formData: FormData): Promise<FormS
   const input = loginSchema.safeParse(Object.fromEntries(formData))
   const values = { identity: String(formData.get('identity') ?? '') }
   if (!input.success) return { fieldErrors: fieldErrors(input.error), values }
+  if (await isDemoMode()) return { error: DEMO_ERROR, values }
 
   const pb = createClient()
   try {
@@ -39,6 +48,7 @@ export async function signup(_prev: FormState, formData: FormData): Promise<Form
     email: String(formData.get('email') ?? ''),
   }
   if (!input.success) return { fieldErrors: fieldErrors(input.error), values }
+  if (await isDemoMode()) return { error: DEMO_ERROR, values }
 
   const pb = createClient()
   try {
